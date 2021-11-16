@@ -9,7 +9,7 @@ $("#search").submit((event) => {
   $("#searchTerm").val("");
 
   let request = new XMLHttpRequest();
-  const url = `http://api.giphy.com/v1/stickers/search?q=${searchTerm}&api_key=${process.env.API_KEY}`;
+  const url = `http://api.giphy.com/v1/stickers/searchq?=${searchTerm}&api_key=${process.env.API_KEY}`;
   request.onreadystatechange = function() {
     if (this.readyState === 4 && this.status === 200) {
       const response = JSON.parse(this.responseText);
