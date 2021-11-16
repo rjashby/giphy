@@ -46,29 +46,47 @@ function outputGifs(response) {
 }
 
 $("#trendSearch").click(() => {
-
-  let request = new XMLHttpRequest();
-  const url = `http://api.giphy.com/v1/gifs/trending?&api_key=${process.env.API_KEY}`;
-  request.onreadystatechange = function() {
-    if (this.readyState === 4 && this.status === 200) {
-      const response = JSON.parse(this.responseText);
-      outputGifs(response);
-    }
-  };
-  request.open("GET", url, true);
-  request.send();  
+  let promise = new Promise(function(resolve, reject){
+    let request = new XMLHttpRequest();
+    const url = `http://api.giphy.com/v1/gifs/trending?&api_key=${process.env.API_KEY}`;
+    request.onload = function() {
+      if (this.status === 200) {
+        resolve(request.response);
+      } else{
+        reject(request.response);
+      }
+    };  
+    request.open("GET", url, true);
+    request.send();  
+  });
+    
+  promise.then(function(response) {
+    const output = JSON.parse(response);
+    outputGifs(output);
+  }, function(){
+    $('#outputs').text("You Fudged Up");
+  });
 });
 
 $("#randomSearch").click(() => {
-
-  let request = new XMLHttpRequest();
-  const url = `http://api.giphy.com/v1/gifs/random?&api_key=${process.env.API_KEY}`;
-  request.onreadystatechange = function() {
-    if (this.readyState === 4 && this.status === 200) {
-      const response = JSON.parse(this.responseText);
-      outputGifs(response);
-    }
-  };
-  request.open("GET", url, true);
-  request.send();
+  let promise = new Promise(function(resolve, reject){
+    let request = new XMLHttpRequest();
+    const url = `http://api.giphy.com/v1/gifs/random?&api_key=${process.env.API_KEY}`;
+    request.onload = function() {
+      if (this.status === 200) {
+        resolve(request.response);
+      } else{
+        reject(request.response);
+      }
+    };    
+    request.open("GET", url, true);
+    request.send();
+  });
+  
+  promise.then(function(response){
+    const output = JSON.parse(response);
+    outputGifs(output);
+  }, function(){
+    $('#outputs').text("You Fudged Up");
+  });
 });
